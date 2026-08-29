@@ -268,14 +268,23 @@ export default function AlumniVideoShowcase() {
 
               {/* Video Player */}
               <div className="px-4 sm:px-6">
-                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black border border-slate-800">
-                  <iframe
-                    src={activeVideo.videoUrl}
-                    title={activeVideo.title}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                <div className="relative aspect-video rounded-2xl overflow-hidden bg-black border border-slate-800 flex items-center justify-center">
+                  {activeVideo.videoUrl.endsWith('.mp4') || activeVideo.videoUrl.endsWith('.webm') || activeVideo.videoUrl.startsWith('/assets') || activeVideo.videoUrl.startsWith('/videos') ? (
+                    <video
+                      src={activeVideo.videoUrl}
+                      controls
+                      autoPlay
+                      className="w-full h-full object-contain bg-black"
+                    />
+                  ) : (
+                    <iframe
+                      src={activeVideo.videoUrl}
+                      title={activeVideo.title}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  )}
                 </div>
               </div>
 
