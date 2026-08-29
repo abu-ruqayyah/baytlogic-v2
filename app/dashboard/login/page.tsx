@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Shield, KeyRound, User, AlertCircle } from 'lucide-react'
+import { client } from '@/sanity/lib/client'
 
 export default function StaffLogin() {
   const [username, setUsername] = useState('')
@@ -18,22 +19,50 @@ export default function StaffLogin() {
     setLoading(true)
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      })
+      let authenticated = false
+      let staffName = 'Yahaya Sulaiman Abdullahi'
 
-      const data = await res.json()
+      // 1. Check credentials against Sanity Studio records
+      try {
+        const staffDoc = await client.fetch(
+          `*[_type == "staff" && username == $username][0] {
+            name,
+            username,
+            password
+          }`,
+          { username: username.trim().toLowerCase() }
+        )
 
-      if (res.ok && data.success) {
-        // Redirect directly to the invoices page after successful auth
+        if (staffDoc && staffDoc.password === password) {
+          staffName = staffDoc.name
+          authenticated = true
+        }
+      } catch (err) {
+        console.warn('Sanity client check failed, using local configuration fallback:', err)
+      }
+
+      // 2. Local fallback credentials check
+      if (!authenticated) {
+        const correctUsername = 'admin'
+        const correctPassword = 'baytlogic2026'
+
+        if (username.trim() === correctUsername && password === correctPassword) {
+          staffName = 'Yahaya Sulaiman Abdullahi'
+          authenticated = true
+        }
+      }
+
+      if (authenticated) {
+        // Store session and staff name in browser LocalStorage
+        localStorage.setItem('baytlogic_staff_authenticated', 'true')
+        localStorage.setItem('baytlogic_staff_name', staffName)
+        
         router.push('/dashboard/invoices')
       } else {
-        setError(data.error || 'Invalid credentials')
+        setError('Invalid username or password')
       }
     } catch (err) {
-      setError('A network connection error occurred')
+      setError('A connection error occurred')
     } finally {
       setLoading(false)
     }
@@ -41,12 +70,10 @@ export default function StaffLogin() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4 relative overflow-hidden font-sans">
-      {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none z-0" />
 
       <div className="max-w-md w-full relative z-10">
         
-        {/* LOGO */}
         <div className="mb-8 flex justify-center items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-500/20">
             <Shield className="w-6 h-6 text-zinc-950 stroke-[2.5]" />
@@ -57,7 +84,6 @@ export default function StaffLogin() {
           </div>
         </div>
 
-        {/* CARD CONTAINER */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -120,7 +146,6 @@ export default function StaffLogin() {
           </form>
         </motion.div>
 
-        {/* BACK BUTTON */}
         <div className="mt-8 text-center">
           <a href="/" className="text-xs text-zinc-500 hover:text-cyan-400 transition-colors duration-300 font-mono tracking-wider uppercase">
             ← Return to Home

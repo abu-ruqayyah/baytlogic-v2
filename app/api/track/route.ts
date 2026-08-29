@@ -2,13 +2,14 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   try {
-    const { type } = await request.json().catch(() => ({}))
-    console.log(`[Analytics] Digital Business Card Click Tracked: ${type}`)
-    
-    // Resolves successfully to preserve front-end stability
-    return NextResponse.json({ success: true })
+    const body = await request.json().catch(() => ({}))
+    const { type, page, timestamp } = body
+
+    // Log analytics interaction
+    console.log(`[BaytLogic Analytics] Type: ${type || 'interaction'}, Page: ${page || 'unknown'}, Time: ${timestamp || new Date().toISOString()}`)
+
+    return NextResponse.json({ success: true, recorded: true })
   } catch (error) {
-    console.error('Error tracking card click:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ success: false, error: 'Failed to record tracking event' }, { status: 500 })
   }
 }

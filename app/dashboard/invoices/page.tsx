@@ -1,15 +1,29 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import InvoiceDashboardClient from './InvoiceDashboardClient'
 
-export const dynamic = 'force-dynamic'
+export default function InvoicePage() {
+  const router = useRouter()
+  const [authorized, setAuthorized] = useState(false)
 
-export default async function InvoicePage() {
-  const cookieStore = await cookies()
-  const session = cookieStore.get('baytlogic_staff_session')
+  useEffect(() => {
+    // Check local storage for authorization instead of cookies (which require a server)
+    const isAuthenticated = localStorage.getItem('baytlogic_staff_authenticated')
+    if (isAuthenticated !== 'true') {
+      router.push('/dashboard/login')
+    } else {
+      setAuthorized(true)
+    }
+  }, [router])
 
-  if (!session || session.value !== 'authenticated') {
-    redirect('/dashboard/login')
+  if (!authorized) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-mono text-xs">
+        Verifying authorization...
+      </div>
+    )
   }
 
   return <InvoiceDashboardClient />

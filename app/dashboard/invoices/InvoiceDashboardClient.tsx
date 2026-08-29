@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Shield, Plus, Trash2, Printer, LogOut, FileText, User, MapPin, Phone, Percent, Tag } from 'lucide-react'
 import InvoiceTemplate from '@/components/InvoiceTemplate'
+import { client } from '@/sanity/lib/client'
 
 interface Product {
   _id: string
@@ -21,6 +22,20 @@ interface InvoiceItem {
   price: number
   quantity: number
 }
+
+const FALLBACK_PRODUCTS = [
+  { _id: 'fb-1', title: 'Hikvision 4MP Smart IR Dome Camera', sku: 'DS-2CD1143G0-I', price: 45000, category: 'cctv', description: '4MP Indoor/Outdoor Dome Network Camera with Smart IR' },
+  { _id: 'fb-2', title: 'Hikvision 4MP Smart IR Bullet Camera', sku: 'DS-2CD1043G0-I', price: 48000, category: 'cctv', description: '4MP Weatherproof Bullet Network Camera' },
+  { _id: 'fb-3', title: 'Hikvision 8-Channel PoE Network Video Recorder', sku: 'DS-7608NI-K1/8P', price: 95000, category: 'nvr', description: '8-Channel 4K NVR with 8 independent PoE ports' },
+  { _id: 'fb-4', title: 'Hikvision 16-Channel PoE Network Video Recorder', sku: 'DS-7616NI-K2/16P', price: 165000, category: 'nvr', description: '16-Channel 4K NVR with 16 independent PoE ports' },
+  { _id: 'fb-5', title: 'Seagate SkyHawk 4TB Surveillance Hard Drive', sku: 'ST4000VX016', price: 78000, category: 'nvr', description: '3.5-inch SATA 6Gb/s surveillance optimized storage' },
+  { _id: 'fb-6', title: 'Seagate SkyHawk 8TB Surveillance Hard Drive', sku: 'ST8000VX004', price: 145000, category: 'nvr', description: 'Surveillance-grade high availability storage' },
+  { _id: 'fb-7', title: 'D-Link Cat6 UTP Cable Box (305m)', sku: 'NCB-C6UGRYR-305', price: 65000, category: 'networking', description: 'Pure copper 23AWG Cat6 networking cable box' },
+  { _id: 'fb-8', title: 'Ubiquiti UniFi U6 Lite Access Point', sku: 'U6-Lite', price: 110000, category: 'networking', description: 'Dual-band Wi-Fi 6 AP with 1.5 Gbps aggregate rate' },
+  { _id: 'fb-9', title: 'Jinko Solar 450W Mono Half-Cell Panel', sku: 'JKM450M-72H', price: 120000, category: 'power', description: 'High efficiency Monocrystalline PV panel' },
+  { _id: 'fb-10', title: 'Pragmatic 12V 200Ah Gel Deep Cycle Battery', sku: 'PR-200AH-GEL', price: 280000, category: 'power', description: 'Maintenance-free solar gel battery' },
+  { _id: 'fb-11', title: 'System Installation, Configuration & Commissioning Fee', sku: 'SVC-INSTALL', price: 150000, category: 'other', description: 'Structured cabling, mounting, software setup, and user training service charge' }
+]
 
 export default function InvoiceDashboardClient() {
   const router = useRouter()
@@ -53,29 +68,42 @@ export default function InvoiceDashboardClient() {
     setPaymentStatus(docType === 'Invoice' ? 'Unpaid' : 'Paid')
   }, [docType])
 
-  // Load authenticated staff name from cookie on mount
+  // Load authenticated staff name from localStorage on mount
   useEffect(() => {
-    const match = document.cookie.match(/(?:^|; )baytlogic_staff_name=([^;]*)/)
-    if (match && match[1]) {
-      setStaffName(decodeURIComponent(match[1]))
+    const name = localStorage.getItem('baytlogic_staff_name')
+    if (name) {
+      setStaffName(name)
     }
   }, [])
 
-  // Fetch catalog from our API endpoint
+  // Fetch catalog from Sanity client-side
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/api/products')
-        if (res.ok) {
-          const data = await res.json()
-          setProducts(data)
-          if (data.length > 0) {
-            setSelectedProductId(data[0]._id)
-            setCustomPrice(data[0].price)
-          }
+        const data = await client.fetch(
+          `*[_type == "product"] | order(category asc, title asc) {
+            _id,
+            title,
+            sku,
+            price,
+            category,
+            description
+          }`
+        )
+        
+        const activeProducts = data && data.length > 0 ? data : FALLBACK_PRODUCTS
+        setProducts(activeProducts)
+        if (activeProducts.length > 0) {
+          setSelectedProductId(activeProducts[0]._id)
+          setCustomPrice(activeProducts[0].price)
         }
       } catch (err) {
-        console.error('Failed to load products:', err)
+        console.error('Failed to load products from Sanity, using fallback:', err)
+        setProducts(FALLBACK_PRODUCTS)
+        if (FALLBACK_PRODUCTS.length > 0) {
+          setSelectedProductId(FALLBACK_PRODUCTS[0]._id)
+          setCustomPrice(FALLBACK_PRODUCTS[0].price)
+        }
       } finally {
         setLoading(false)
       }
@@ -123,9 +151,8 @@ export default function InvoiceDashboardClient() {
 
   // Log out staff session
   const handleLogout = async () => {
-    // In a real application, you can hit a logout API to clear the cookie,
-    // here we clear the cookie client-side and redirect
-    document.cookie = 'baytlogic_staff_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    localStorage.removeItem('baytlogic_staff_authenticated')
+    localStorage.removeItem('baytlogic_staff_name')
     router.push('/dashboard/login')
   }
 

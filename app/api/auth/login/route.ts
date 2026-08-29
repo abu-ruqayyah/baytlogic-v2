@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { createClient } from 'next-sanity'
 import { apiVersion, dataset, projectId } from '@/sanity/env'
 
-// Create a secure server-side client with write/read privileges
 const secureClient = createClient({
   projectId,
   dataset,
@@ -13,70 +12,87 @@ const secureClient = createClient({
 
 export async function POST(request: Request) {
   try {
-    const { username, password } = await request.json()
+    const { username, password } = await request.json().catch(() => ({}))
     if (!username || !password) {
       return NextResponse.json({ error: 'Username and password are required' }, { status: 400 })
     }
 
+    const cleanUser = username.trim().toLowerCase()
     let staffName = 'Yahaya Sulaiman Abdullahi'
+    let staffRole = 'Chief Admin'
     let authenticated = false
 
-    // 1. Attempt to validate staff against Sanity Studio records
-    try {
-      const staffDoc = await secureClient.fetch(
-        `*[_type == "staff" && username == $username][0] {
-          name,
-          username,
-          password
-        }`,
-        { username: username.trim().toLowerCase() }
-      )
-
-      if (staffDoc && staffDoc.password === password) {
-        staffName = staffDoc.name
-        authenticated = true
-      }
-    } catch (err) {
-      console.warn('Sanity staff check failed, using local configuration fallback:', err)
+    // 1. Check Master Chief Admin credentials
+    if (
+      (cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'admin') &&
+      (password === 'BaytLogic2026' || password === 'baytlogic2026' || password === 'admin')
+    ) {
+      staffName = 'Yahaya Sulaiman Abdullahi'
+      staffRole = 'Chief Admin'
+      authenticated = true
     }
 
-    // 2. Fallback to default env credentials if not validated by Sanity
+    // 2. Check Sanity Studio staff records
     if (!authenticated) {
-      const correctUsername = process.env.STAFF_USERNAME || 'admin'
-      const correctPassword = process.env.STAFF_PASSWORD || 'baytlogic2026'
+      try {
+        const staffDoc = await secureClient.fetch(
+          `*[_type == "staff" && (lower(username) == $u || lower(email) == $u)][0] {
+            name,
+            username,
+            role,
+            password
+          }`,
+          { u: cleanUser }
+        )
 
-      if (username.trim() === correctUsername && password === correctPassword) {
-        staffName = 'Yahaya Sulaiman Abdullahi' // Default fallback admin name
-        authenticated = true
+        if (staffDoc && staffDoc.password === password) {
+          staffName = staffDoc.name
+          staffRole = staffDoc.role || 'Field Engineer'
+          authenticated = true
+        }
+      } catch (err) {
+        console.warn('Sanity staff check error:', err)
       }
     }
 
     if (authenticated) {
-      const response = NextResponse.json({ success: true })
-      
-      // Cookie 1: Secure, HTTP-only cookie for route protection
+      const response = NextResponse.json({
+        success: true,
+        user: { name: staffName, role: staffRole, username: cleanUser }
+      })
+
+      // Cookie 1: Server-side HTTP-Only session token for Next.js Middleware RBAC
       response.cookies.set('baytlogic_staff_session', 'authenticated', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 12, // 12 hours
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24, // 24 hours
         path: '/'
       })
 
-      // Cookie 2: Accessible by client-side JS to display staff name on the generated invoice
+      // Cookie 2: User role for role-based gating
+      response.cookies.set('baytlogic_user_role', staffRole, {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24,
+        path: '/'
+      })
+
+      // Cookie 3: Staff Name
       response.cookies.set('baytlogic_staff_name', staffName, {
         httpOnly: false,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 12,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24,
         path: '/'
       })
 
       return response
     }
 
-    return NextResponse.json({ error: 'Invalid username or password' }, { status: 401 })
-  } catch (err) {
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    return NextResponse.json({ error: 'Invalid username or password.' }, { status: 401 })
+  } catch (err: any) {
+    return NextResponse.json({ error: 'Authentication service error.' }, { status: 500 })
   }
 }

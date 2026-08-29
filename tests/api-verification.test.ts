@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { GET } from '../app/api/verify-cert/route'
 import fs from 'fs'
 import path from 'path'
 
@@ -14,19 +15,14 @@ function logFailure(message: string) {
 }
 
 describe('API Verification Endpoint', () => {
-  it('should verify certificate format', async () => {
+  it('should verify certificate format using route handler', async () => {
     try {
-      const response = await fetch('http://127.0.0.1:3000/api/verify-cert?id=MOCK123', {
-        signal: AbortSignal.timeout(15000),
-      })
+      const request = new Request('http://localhost:3000/api/verify-cert?id=MOCK123')
+      const response = await GET(request)
       
-      if (response.status !== 200) {
-        throw new Error(`Endpoint returned status ${response.status}`)
-      }
+      expect(response.status).toBe(200)
+      const data = await response.json()
       
-      const data = await response.json() as any
-      
-      // Assert format matches expected ApiResponse schema
       expect(data).toBeTypeOf('object')
       expect(data).toHaveProperty('valid')
       expect(typeof data.valid).toBe('boolean')
@@ -50,5 +46,15 @@ describe('API Verification Endpoint', () => {
       logFailure(error?.message || String(error))
       throw error
     }
-  }, 15000)
+  })
+
+  it('should verify real graduate certificate from 67-cert database', async () => {
+    const request = new Request('http://localhost:3000/api/verify-cert?id=BLT-2026-001')
+    const response = await GET(request)
+    
+    expect(response.status).toBe(200)
+    const data = await response.json()
+    expect(data.valid).toBe(true)
+    expect(data.certificate.studentName).toBe('Ahmad Adamu Zakari')
+  })
 })
