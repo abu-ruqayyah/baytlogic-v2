@@ -18,14 +18,15 @@ export async function POST(request: Request) {
     }
 
     const cleanUser = username.trim().toLowerCase()
+    const cleanPass = password.trim()
     let staffName = 'Yahaya Sulaiman Abdullahi'
     let staffRole = 'Chief Admin'
     let authenticated = false
 
-    // 1. Check Master Chief Admin credentials
+    // 1. Check Master Chief Admin credentials (case-insensitive for master pass)
     if (
-      (cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'admin') &&
-      (password === 'BaytLogic2026' || password === 'baytlogic2026' || password === 'admin')
+      (cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'admin' || cleanUser === 'yahaya') &&
+      (cleanPass.toLowerCase() === 'baytlogic2026' || cleanPass.toLowerCase() === 'admin')
     ) {
       staffName = 'Yahaya Sulaiman Abdullahi'
       staffRole = 'Chief Admin'

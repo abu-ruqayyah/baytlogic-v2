@@ -43,7 +43,7 @@ export default function StaffLogin() {
       // Fallback local check
       if (
         (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'yahaya') &&
-        (cleanPass === 'BaytLogic2026' || cleanPass === 'baytlogic2026' || cleanPass === 'admin')
+        (cleanPass.toLowerCase() === 'baytlogic2026' || cleanPass.toLowerCase() === 'admin')
       ) {
         localStorage.setItem('baytlogic_staff_authenticated', 'true')
         localStorage.setItem('baytlogic_staff_username', cleanUser)
@@ -59,7 +59,7 @@ export default function StaffLogin() {
       const cleanPass = password.trim()
       if (
         (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'yahaya') &&
-        (cleanPass === 'BaytLogic2026' || cleanPass === 'baytlogic2026' || cleanPass === 'admin')
+        (cleanPass.toLowerCase() === 'baytlogic2026' || cleanPass.toLowerCase() === 'admin')
       ) {
         localStorage.setItem('baytlogic_staff_authenticated', 'true')
         localStorage.setItem('baytlogic_staff_username', cleanUser)
