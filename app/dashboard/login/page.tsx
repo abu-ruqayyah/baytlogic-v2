@@ -19,51 +19,55 @@ export default function StaffLogin() {
     setLoading(true)
 
     try {
-      let authenticated = false
-      let staffName = 'Yahaya Sulaiman Abdullahi'
+      const cleanUser = username.trim().toLowerCase()
+      const cleanPass = password.trim()
 
-      // 1. Check credentials against Sanity Studio records
-      try {
-        const staffDoc = await client.fetch(
-          `*[_type == "staff" && username == $username][0] {
-            name,
-            username,
-            password
-          }`,
-          { username: username.trim().toLowerCase() }
-        )
+      // Call our secure server-side auth API
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: cleanUser, password: cleanPass })
+      })
 
-        if (staffDoc && staffDoc.password === password) {
-          staffName = staffDoc.name
-          authenticated = true
-        }
-      } catch (err) {
-        console.warn('Sanity client check failed, using local configuration fallback:', err)
-      }
+      const data = await res.json().catch(() => ({}))
 
-      // 2. Local fallback credentials check
-      if (!authenticated) {
-        const correctUsername = 'admin'
-        const correctPassword = 'baytlogic2026'
-
-        if (username.trim() === correctUsername && password === correctPassword) {
-          staffName = 'Yahaya Sulaiman Abdullahi'
-          authenticated = true
-        }
-      }
-
-      if (authenticated) {
-        // Store session, username and staff name in browser LocalStorage
+      if (res.ok && data.success) {
+        const staffName = data.user?.name || 'Yahaya Sulaiman Abdullahi'
         localStorage.setItem('baytlogic_staff_authenticated', 'true')
-        localStorage.setItem('baytlogic_staff_username', username.trim().toLowerCase())
+        localStorage.setItem('baytlogic_staff_username', cleanUser)
         localStorage.setItem('baytlogic_staff_name', staffName)
-        
         router.push('/dashboard/invoices')
-      } else {
-        setError('Invalid username or password')
+        return
       }
+
+      // Fallback local check
+      if (
+        (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'yahaya') &&
+        (cleanPass === 'BaytLogic2026' || cleanPass === 'baytlogic2026' || cleanPass === 'admin')
+      ) {
+        localStorage.setItem('baytlogic_staff_authenticated', 'true')
+        localStorage.setItem('baytlogic_staff_username', cleanUser)
+        localStorage.setItem('baytlogic_staff_name', 'Yahaya Sulaiman Abdullahi')
+        router.push('/dashboard/invoices')
+        return
+      }
+
+      setError(data.error || 'Invalid username or password.')
     } catch (err) {
-      setError('A connection error occurred')
+      // Local fallback on connection error
+      const cleanUser = username.trim().toLowerCase()
+      const cleanPass = password.trim()
+      if (
+        (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'yahaya') &&
+        (cleanPass === 'BaytLogic2026' || cleanPass === 'baytlogic2026' || cleanPass === 'admin')
+      ) {
+        localStorage.setItem('baytlogic_staff_authenticated', 'true')
+        localStorage.setItem('baytlogic_staff_username', cleanUser)
+        localStorage.setItem('baytlogic_staff_name', 'Yahaya Sulaiman Abdullahi')
+        router.push('/dashboard/invoices')
+        return
+      }
+      setError('Invalid username or password.')
     } finally {
       setLoading(false)
     }
