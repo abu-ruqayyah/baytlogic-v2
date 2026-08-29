@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Shield, Plus, Trash2, Printer, LogOut, FileText, User, MapPin, Phone, Percent, Tag } from 'lucide-react'
+import Link from 'next/link'
+import { Shield, Plus, Trash2, Printer, LogOut, FileText, User, MapPin, Phone, Percent, Tag, KeyRound, UserPlus, Lock, CheckCircle2, AlertCircle, X, Loader2 } from 'lucide-react'
 import InvoiceTemplate from '@/components/InvoiceTemplate'
 import { client } from '@/sanity/lib/client'
 
@@ -59,6 +60,24 @@ export default function InvoiceDashboardClient() {
   const [customPrice, setCustomPrice] = useState<number>(0)
   const [quantity, setQuantity] = useState<number>(1)
 
+  // Password Management States
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordStatus, setPasswordStatus] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [passwordLoading, setPasswordLoading] = useState(false)
+
+  // Staff Management States
+  const [showStaffModal, setShowStaffModal] = useState(false)
+  const [newStaffName, setNewStaffName] = useState('')
+  const [newStaffUsername, setNewStaffUsername] = useState('')
+  const [newStaffPassword, setNewStaffPassword] = useState('')
+  const [staffStatus, setStaffStatus] = useState('')
+  const [staffError, setStaffError] = useState('')
+  const [staffLoading, setStaffLoading] = useState(false)
+
   // Auto-generate invoice/receipt number on load
   useEffect(() => {
     const year = new Date().getFullYear()
@@ -75,6 +94,96 @@ export default function InvoiceDashboardClient() {
       setStaffName(name)
     }
   }, [])
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPasswordError('')
+    setPasswordStatus('')
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New passwords do not match.')
+      return
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordError('New password must be at least 6 characters.')
+      return
+    }
+
+    setPasswordLoading(true)
+    try {
+      const username = localStorage.getItem('baytlogic_staff_username') || 'admin'
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username,
+          currentPassword,
+          newPassword
+        })
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setPasswordStatus(data.message || 'Password updated successfully!')
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmPassword('')
+        setTimeout(() => {
+          setShowPasswordModal(false)
+          setPasswordStatus('')
+        }, 2000)
+      } else {
+        setPasswordError(data.error || 'Failed to update password.')
+      }
+    } catch (err) {
+      setPasswordError('Network error while updating password.')
+    } finally {
+      setPasswordLoading(false)
+    }
+  }
+
+  const handleAddStaff = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStaffError('')
+    setStaffStatus('')
+
+    if (!newStaffName || !newStaffUsername || !newStaffPassword) {
+      setStaffError('Please fill all fields.')
+      return
+    }
+
+    setStaffLoading(true)
+    try {
+      const res = await fetch('/api/auth/add-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newStaffName,
+          username: newStaffUsername,
+          password: newStaffPassword
+        })
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setStaffStatus(data.message || 'Staff member created successfully!')
+        setNewStaffName('')
+        setNewStaffUsername('')
+        setNewStaffPassword('')
+        setTimeout(() => {
+          setShowStaffModal(false)
+          setStaffStatus('')
+        }, 2000)
+      } else {
+        setStaffError(data.error || 'Failed to register staff.')
+      }
+    } catch (err) {
+      setStaffError('Network error while registering staff.')
+    } finally {
+      setStaffLoading(false)
+    }
+  }
 
   // Fetch catalog from Sanity client-side
   useEffect(() => {
@@ -194,11 +303,41 @@ export default function InvoiceDashboardClient() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          <span className="text-xs text-zinc-400 font-mono hidden md:inline">User: <strong className="text-white">{staffName}</strong></span>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <span className="text-xs text-zinc-400 font-mono hidden lg:inline">User: <strong className="text-white">{staffName}</strong></span>
+          
+          <button
+            onClick={() => {
+              setPasswordError('')
+              setPasswordStatus('')
+              setShowPasswordModal(true)
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-cyan-300 border border-zinc-700 text-xs transition-all font-semibold shadow-sm"
+          >
+            <KeyRound className="w-3.5 h-3.5 text-cyan-400" /> Change Password
+          </button>
+
+          <button
+            onClick={() => {
+              setStaffError('')
+              setStaffStatus('')
+              setShowStaffModal(true)
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-emerald-300 border border-zinc-700 text-xs transition-all font-semibold shadow-sm"
+          >
+            <UserPlus className="w-3.5 h-3.5 text-emerald-400" /> Add Staff
+          </button>
+
+          <Link
+            href="/studio"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-purple-300 border border-zinc-700 text-xs transition-all font-semibold shadow-sm"
+          >
+            <Lock className="w-3.5 h-3.5 text-purple-400" /> CMS Studio
+          </Link>
+
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-red-500/10 hover:text-red-400 border border-zinc-700 hover:border-red-500/20 text-xs transition-all duration-300 font-semibold"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-red-500/10 hover:text-red-400 border border-zinc-700 hover:border-red-500/20 text-xs transition-all font-semibold"
           >
             <LogOut className="w-3.5 h-3.5" /> Logout
           </button>
@@ -470,6 +609,188 @@ export default function InvoiceDashboardClient() {
 
         </div>
       </div>
+
+      {/* CHANGE PASSWORD MODAL */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <button
+              onClick={() => setShowPasswordModal(false)}
+              className="absolute top-5 right-5 p-1.5 rounded-full bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase font-mono">
+                <KeyRound className="w-3.5 h-3.5" /> Security Credentials
+              </div>
+              <h3 className="text-xl font-extrabold text-white">Change Account Password</h3>
+              <p className="text-xs text-zinc-400">Update login password for user <strong className="text-cyan-400">{staffName}</strong>.</p>
+            </div>
+
+            {passwordError && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-xs text-red-400 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{passwordError}</span>
+              </div>
+            )}
+
+            {passwordStatus && (
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-400 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{passwordStatus}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleChangePassword} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-zinc-400 mb-1 font-mono uppercase text-[10px]">Current Password</label>
+                <input
+                  type="password"
+                  required
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Enter current password"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-3.5 text-white outline-none focus:border-cyan-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-zinc-400 mb-1 font-mono uppercase text-[10px]">New Password</label>
+                <input
+                  type="password"
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="At least 6 characters"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-3.5 text-white outline-none focus:border-cyan-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-zinc-400 mb-1 font-mono uppercase text-[10px]">Confirm New Password</label>
+                <input
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter new password"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-3.5 text-white outline-none focus:border-cyan-500 transition"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPasswordModal(false)}
+                  className="w-1/2 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={passwordLoading}
+                  className="w-1/2 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-zinc-950 font-extrabold transition shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2"
+                >
+                  {passwordLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Save Password'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD STAFF MODAL */}
+      {showStaffModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl relative">
+            <button
+              onClick={() => setShowStaffModal(false)}
+              className="absolute top-5 right-5 p-1.5 rounded-full bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase font-mono">
+                <UserPlus className="w-3.5 h-3.5" /> Team Management
+              </div>
+              <h3 className="text-xl font-extrabold text-white">Register New Staff Member</h3>
+              <p className="text-xs text-zinc-400">Add an engineer or team member so they can issue quotations & receipts.</p>
+            </div>
+
+            {staffError && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-xs text-red-400 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{staffError}</span>
+              </div>
+            )}
+
+            {staffStatus && (
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-400 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{staffStatus}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleAddStaff} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-zinc-400 mb-1 font-mono uppercase text-[10px]">Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={newStaffName}
+                  onChange={(e) => setNewStaffName(e.target.value)}
+                  placeholder="e.g. Ibrahim Abubakar"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-3.5 text-white outline-none focus:border-emerald-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-zinc-400 mb-1 font-mono uppercase text-[10px]">Login Username</label>
+                <input
+                  type="text"
+                  required
+                  value={newStaffUsername}
+                  onChange={(e) => setNewStaffUsername(e.target.value)}
+                  placeholder="e.g. ibrahim"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-3.5 text-white outline-none focus:border-emerald-500 transition lowercase font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-zinc-400 mb-1 font-mono uppercase text-[10px]">Initial Password</label>
+                <input
+                  type="password"
+                  required
+                  value={newStaffPassword}
+                  onChange={(e) => setNewStaffPassword(e.target.value)}
+                  placeholder="Temporary or permanent password"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 px-3.5 text-white outline-none focus:border-emerald-500 transition"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowStaffModal(false)}
+                  className="w-1/2 py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={staffLoading}
+                  className="w-1/2 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-zinc-950 font-extrabold transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+                >
+                  {staffLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Register Staff'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   )

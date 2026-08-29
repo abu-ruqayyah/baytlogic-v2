@@ -53,8 +53,9 @@ export default function StaffLogin() {
       }
 
       if (authenticated) {
-        // Store session and staff name in browser LocalStorage
+        // Store session, username and staff name in browser LocalStorage
         localStorage.setItem('baytlogic_staff_authenticated', 'true')
+        localStorage.setItem('baytlogic_staff_username', username.trim().toLowerCase())
         localStorage.setItem('baytlogic_staff_name', staffName)
         
         router.push('/dashboard/invoices')
