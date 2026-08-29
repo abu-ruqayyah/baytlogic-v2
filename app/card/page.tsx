@@ -134,9 +134,11 @@ export default function DigitalBusinessCard() {
           className="mb-8 flex justify-center items-center gap-2.5 cursor-pointer"
           onClick={() => (window.location.href = '/')}
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-            <Shield className="w-5 h-5 text-zinc-950 stroke-[2]" />
-          </div>
+          <img 
+            src="/assets/baytlogic-icon-cyan.png" 
+            alt="BaytLogic Logo" 
+            className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(34,211,238,0.4)]" 
+          />
           <div className="text-left">
             <span className="font-extrabold text-white text-lg tracking-tight block leading-none">BAYTLOGIC</span>
             <span className="text-[10px] text-cyan-400 tracking-widest uppercase font-bold font-mono">TECHNOLOGIES</span>

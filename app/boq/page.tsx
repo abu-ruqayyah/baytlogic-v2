@@ -130,13 +130,15 @@ export default function SmartBOQPage() {
       {/* Top Bar (Hidden on Print) */}
       <header className="no-print bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 py-4 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-cyan-400 flex items-center justify-center shadow-md">
-              <Shield className="w-5 h-5 text-slate-950 stroke-[2.5]" />
-            </div>
+          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition group">
+            <img 
+              src="/assets/baytlogic-icon-cyan.png" 
+              alt="BaytLogic Logo" 
+              className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] group-hover:scale-105 transition-transform duration-300" 
+            />
             <div>
               <span className="font-extrabold text-lg tracking-wider text-white">BAYTLOGIC</span>
-              <span className="text-xs text-cyan-400 block font-semibold tracking-widest uppercase">Smart BOQ & Quotation Studio</span>
+              <span className="text-xs text-cyan-400 block font-semibold tracking-widest uppercase font-mono">Smart BOQ & Quotation Studio</span>
             </div>
           </Link>
 
@@ -373,10 +375,12 @@ export default function SmartBOQPage() {
             {/* Header / Institutional Branding */}
             <div className="flex flex-wrap items-start justify-between gap-6 pb-6 border-b-2 border-slate-900">
               <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-slate-950 flex items-center justify-center text-white">
-                    <Shield className="w-5 h-5 text-cyan-400 stroke-[2.5]" />
-                  </div>
+                <div className="flex items-center gap-3">
+                  <img 
+                    src="/assets/baytlogic-icon-cyan.png" 
+                    alt="BaytLogic Logo" 
+                    className="w-10 h-10 object-contain" 
+                  />
                   <h1 className="text-2xl font-extrabold tracking-wider text-slate-950">BAYTLOGIC</h1>
                 </div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 font-mono">

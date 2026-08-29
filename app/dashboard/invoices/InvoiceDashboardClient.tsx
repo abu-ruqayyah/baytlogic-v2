@@ -183,11 +183,13 @@ export default function InvoiceDashboardClient() {
       {/* DASHBOARD HEADER */}
       <header className="no-print bg-zinc-900/80 border-b border-zinc-800 py-4 px-6 sticky top-0 backdrop-blur-md z-30 flex justify-between items-center">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
-            <Shield className="w-4 h-4 text-zinc-950 stroke-[2.5]" />
-          </div>
+          <img 
+            src="/assets/baytlogic-icon-cyan.png" 
+            alt="BaytLogic Logo" 
+            className="w-8 h-8 object-contain drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]" 
+          />
           <div>
-            <span className="font-extrabold text-sm tracking-tight block leading-none">BAYTLOGIC</span>
+            <span className="font-extrabold text-sm tracking-tight block leading-none text-white">BAYTLOGIC</span>
             <span className="text-[8px] text-cyan-400 tracking-widest uppercase font-bold font-mono">STAFF PORTAL</span>
           </div>
         </div>

@@ -262,12 +262,23 @@ function CertificateContent() {
             <div className="border border-[#0f2847] p-1.5 h-full relative">
               <div className="border-[1.5px] border-[#c59b27] p-6 sm:p-8 h-full flex flex-col justify-between relative bg-transparent">
                 
+                {/* Watermark */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                  <img 
+                    src="/assets/new_projects/logo.png" 
+                    alt="BaytLogic Watermark" 
+                    className="w-72 sm:w-80 h-auto object-contain opacity-[0.04] grayscale" 
+                  />
+                </div>
+
                 {/* 1. Header: BaytLogic Logo & Institutional Branding */}
-                <div className="text-center space-y-1">
+                <div className="text-center space-y-1 relative z-10">
                   <div className="flex justify-center items-center pb-1">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-600 to-cyan-500 flex items-center justify-center shadow-md">
-                      <ShieldCheck className="w-7 h-7 text-white stroke-[2.5]" />
-                    </div>
+                    <img 
+                      src="/assets/new_projects/logo.png" 
+                      alt="Official BaytLogic Logo" 
+                      className="h-14 sm:h-16 w-auto object-contain mx-auto" 
+                    />
                   </div>
                   <h2 className="font-sans text-xl sm:text-2xl font-black tracking-[0.2em] text-[#0f2847] uppercase">
                     BAYTLOGIC TECHNOLOGIES

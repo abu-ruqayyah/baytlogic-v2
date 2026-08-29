@@ -71,9 +71,11 @@ export default async function Home() {
       <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-900/85 backdrop-blur-xl transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <a href="#" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-500/20 transition-transform duration-300 group-hover:scale-105">
-              <Shield className="w-5 h-5 text-slate-950 stroke-[2]" />
-            </div>
+            <img 
+              src="/assets/baytlogic-icon-cyan.png" 
+              alt="BaytLogic Logo" 
+              className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(34,211,238,0.4)] transition-transform duration-300 group-hover:scale-105" 
+            />
             <div className="flex flex-col">
               <span className="font-extrabold text-white text-xl tracking-wider">BAYTLOGIC</span>
               <div className="flex items-center gap-1.5 -mt-0.5">
@@ -819,9 +821,12 @@ export default async function Home() {
       <footer className="bg-slate-950 py-12 text-center text-slate-400 text-sm border-t border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center space-y-4">
           <a href="#" className="inline-block hover:opacity-90 transition">
-            <span className="font-extrabold text-white text-2xl tracking-wider">BAYTLOGIC</span>
+            <img 
+              src="/assets/baytlogic-logo-cyan.png" 
+              alt="BaytLogic Technologies - Where Intelligence Meets Security" 
+              className="h-16 w-auto object-contain mx-auto drop-shadow-[0_0_15px_rgba(34,211,238,0.25)]" 
+            />
           </a>
-          <p className="text-xs text-slate-400 max-w-md tracking-wider font-medium font-mono">Where Intelligence Meets Security</p>
           
           <div className="flex flex-wrap justify-center gap-6 text-xs text-slate-400 font-semibold pt-2">
             <a href="/verify" className="hover:text-cyan-400 transition flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Verify Certificate</a>

@@ -75,9 +75,11 @@ export default function StaffLogin() {
       <div className="max-w-md w-full relative z-10">
         
         <div className="mb-8 flex justify-center items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-            <Shield className="w-6 h-6 text-zinc-950 stroke-[2.5]" />
-          </div>
+          <img 
+            src="/assets/baytlogic-icon-cyan.png" 
+            alt="BaytLogic Logo" 
+            className="w-12 h-12 object-contain drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]" 
+          />
           <div className="text-left">
             <span className="font-extrabold text-white text-xl tracking-tight block leading-none">BAYTLOGIC</span>
             <span className="text-[11px] text-cyan-400 tracking-widest uppercase font-bold font-mono">TECHNOLOGIES</span>
