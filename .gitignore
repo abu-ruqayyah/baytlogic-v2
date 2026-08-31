@@ -40,5 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Local Netlify folder
+# Local Netlify & OpenNext folders
 .netlify
+.open-next
