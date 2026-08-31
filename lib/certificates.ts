@@ -342,3 +342,18 @@ export function lookupCertificate(id: string): CertificateRecord | null {
   const normalized = normalizeCertificateId(id)
   return CERTIFICATE_REGISTRY[normalized] || null
 }
+
+export function formatSponsors(input: string | string[]): string {
+  if (!input) return ''
+  const list = Array.isArray(input)
+    ? input.map(s => s.trim()).filter(Boolean)
+    : input.split(',').map(s => s.trim()).filter(Boolean)
+
+  if (list.length === 0) return ''
+  if (list.length === 1) return list[0]
+  if (list.length === 2) return `${list[0]} & ${list[1]}`
+  
+  const allExceptLast = list.slice(0, -1).join(', ')
+  const last = list[list.length - 1]
+  return `${allExceptLast} & ${last}`
+}

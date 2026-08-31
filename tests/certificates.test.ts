@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { CERTIFICATE_REGISTRY, normalizeCertificateId, lookupCertificate } from '../lib/certificates'
+import { CERTIFICATE_REGISTRY, normalizeCertificateId, lookupCertificate, formatSponsors } from '../lib/certificates'
 
 describe('Certificate Registry & Normalization Tests', () => {
   it('should have all 26 official graduate certificates registered', () => {
@@ -49,5 +49,12 @@ describe('Certificate Registry & Normalization Tests', () => {
       expect(cert?.partners).toContain('NURTUREROOTS FOUNDATION')
       expect(cert?.partners).toContain('NASCOMSOFT EMBEDDED')
     }
+  })
+
+  it('should format sponsors with commas and ampersand before the last item', () => {
+    expect(formatSponsors('HAMJIK CARE INITIATIVE')).toBe('HAMJIK CARE INITIATIVE')
+    expect(formatSponsors('HAMJIK CARE INITIATIVE, NURTUREROOTS FOUNDATION')).toBe('HAMJIK CARE INITIATIVE & NURTUREROOTS FOUNDATION')
+    expect(formatSponsors('HAMJIK CARE INITIATIVE, NURTUREROOTS FOUNDATION, NASCOMSOFT EMBEDDED')).toBe('HAMJIK CARE INITIATIVE, NURTUREROOTS FOUNDATION & NASCOMSOFT EMBEDDED')
+    expect(formatSponsors(['A', 'B', 'C', 'D'])).toBe('A, B, C & D')
   })
 })
