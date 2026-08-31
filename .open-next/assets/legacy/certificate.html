@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Official Institutional Certificate – BaytLogic Technologies</title>
+  
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- html2pdf.js for client-side PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Google Fonts: Cinzel (Refined Serif Heading), Playfair Display (Recipient Name), Inter (Modern Body) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+            cinzel: ['Cinzel', 'serif'],
+          },
+          colors: {
+            brand: {
+              navy: '#0f2847',
+              gold: '#c59b27',
+              goldMuted: '#9a7b2c',
+              slate: '#334155',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @page {
+      size: 297mm 210mm landscape;
+      margin: 0;
+    }
+
+    @media print {
+      .no-print, header, #controlsSidebar {
+        display: none !important;
+      }
+      
+      html, body {
+        background: #fdfdfb !important;
+        color: #0f2847 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .max-w-7xl, .lg\:col-span-8 {
+        display: block !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        max-width: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      #certPaper {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        max-width: 297mm !important;
+        max-height: 210mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 10mm !important;
+        box-sizing: border-box !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+    /* Restrained Double-Line Institutional Border Frame */
+    .cert-frame-outer {
+      border: 1px solid #0f2847;
+      padding: 4px;
+      height: 100%;
+    }
+
+    .cert-frame-inner {
+      border: 1.5px solid #c59b27;
+      height: 100%;
+    }
+
+    /* Watermark Circuit Background */
+    .cert-watermark {
+      background-image: radial-gradient(#0f2847 0.75px, transparent 0.75px), radial-gradient(#c59b27 0.75px, #fdfdfb 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.035;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased min-h-screen">
+
+  <!-- Top Control Bar (Hidden on Print / PDF export) -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 py-3 px-4 sm:px-8 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="admin.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition text-xs font-semibold">
+          &larr; Return to Admin Studio
+        </a>
+        <span class="text-slate-700">|</span>
+        <span class="text-xs text-amber-400 font-bold tracking-wider uppercase flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Official BaytLogic Certificate Engine (A4 Landscape 297×210mm)
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="toggleSidebar()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition border border-slate-700 flex items-center gap-1.5">
+          <i data-lucide="sliders" class="w-3.5 h-3.5"></i> Customizer Options
+        </button>
+        <button onclick="downloadPDF()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg text-xs font-bold transition border border-cyan-500/30 flex items-center gap-1.5">
+          <i data-lucide="download" class="w-4 h-4"></i> Download A4 Landscape PDF
+        </button>
+        <button onclick="window.print()" class="px-5 py-2 bg-brand-navy hover:bg-slate-800 text-white font-bold rounded-lg text-xs transition shadow-lg flex items-center gap-1.5 border border-amber-500/40">
+          <i data-lucide="printer" class="w-4 h-4 text-amber-400"></i> Print Certificate
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto p-4 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Left Customizer Panel (Hidden on Print) -->
+    <div id="controlsSidebar" class="no-print lg:col-span-4 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5 h-fit shadow-xl">
+      <h3 class="text-lg font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
+        <i data-lucide="edit-3" class="w-5 h-5 text-amber-400"></i> Certificate Customizer
+      </h3>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Certificate ID</label>
+          <div class="flex gap-1.5">
+            <input type="text" id="inId" value="BLT-2026-027" oninput="updateCert()" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-amber-400 font-mono font-bold outline-none focus:border-amber-400 transition text-xs" />
+            <button type="button" onclick="generateNextCertIdManual()" title="Generate Next Incremental Certificate ID" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg text-xs font-bold transition flex items-center gap-1 shrink-0">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Next
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Recipient Full Name</label>
+          <input type="text" id="inName" value="Muhammad Ukasha Abdullahi" oninput="updateCert()" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white font-bold outline-none focus:border-amber-400 transition" />
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Programme Specialization</label>
+          <select id="inCoursePreset" onchange="applyPresetCourse()" class="w-full mb-2 px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-cyan-300 font-semibold outline-none focus:border-amber-400 transition">
+            <option value="SMART HOME AUTOMATION & SMART CCTV INSTALLATION">Smart Home Automation & CCTV</option>
+            <option value="YOUNG INNOVATORS ROBOTICS & STEM BOOTCAMP">Young Innovators Robotics Bootcamp</option>
+            <option value="EMBEDDED AI & EDGE COMPUTER VISION MASTERCLASS">Embedded AI & Edge Computer Vision</option>
+            <option value="CUSTOM">Custom Course Title...</option>
+          </select>
+          <input type="text" id="inCourse" value="SMART HOME AUTOMATION & SMART CCTV INSTALLATION" oninput="updateCert()" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-amber-400 transition" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1">Location</label>
+            <input type="text" id="inLoc" value="Ibrahim Bako, Bauchi" oninput="updateCert()" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 outline-none focus:border-amber-400 transition" />
+          </div>
+
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1">Training Dates</label>
+            <input type="text" id="inDate" value="June 11 – June 15, 2026" oninput="updateCert()" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 outline-none focus:border-amber-400 transition" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-semibold mb-1">Director Name</label>
+          <input type="text" id="inDirector" value="Yahaya Sulaiman Abdullahi" oninput="updateCert()" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white font-semibold outline-none focus:border-amber-400 transition" />
+        </div>
+
+        <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700 text-[11px] text-slate-400 space-y-1">
+          <p><strong class="text-amber-400">⚡ Live Authentication URL:</strong></p>
+          <p>• Scans to: <code id="qrPreviewLink" class="text-cyan-400">https://baytlogic.com.ng/verify.html?id=BLT-2026-020</code></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate Preview Area -->
+    <div class="lg:col-span-8 flex justify-center items-center">
+      
+      <!-- A4 Landscape Certificate Canvas (Exact 297mm × 210mm Aspect Ratio) -->
+      <div id="certPaper" class="cert-paper bg-[#fdfdfb] text-brand-navy w-full max-w-[1000px] aspect-[1.414/1] p-6 sm:p-8 shadow-2xl relative flex flex-col justify-between overflow-hidden rounded-md border border-slate-200">
+        
+        <!-- Subtle Faint Circuit Watermark -->
+        <div class="cert-watermark absolute inset-0 pointer-events-none"></div>
+
+        <!-- Very Subtle Central Emblem Watermark (3-4% Opacity) -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.035]">
+          <img src="assets/new_projects/logo.png" alt="Watermark" class="w-80 h-80 object-contain grayscale" />
+        </div>
+
+        <!-- Double-Line Institutional Border Frame -->
+        <div class="cert-frame-outer relative z-10">
+          <div class="cert-frame-inner p-6 sm:p-8 flex flex-col justify-between relative bg-transparent">
+            
+            <!-- 1. Top Header: Original Official BaytLogic Logo & Institutional Branding -->
+            <div class="text-center space-y-1">
+              <div class="flex justify-center items-center pb-1">
+                <img id="outLogoImg" src="assets/new_projects/logo.png" alt="Official BaytLogic Logo" class="h-14 sm:h-16 w-auto object-contain mx-auto" />
+              </div>
+              <h2 class="font-sans text-xl sm:text-2xl font-bold tracking-[0.2em] text-brand-navy uppercase">BAYTLOGIC TECHNOLOGIES</h2>
+              <p class="text-[10px] sm:text-xs text-brand-goldMuted font-medium tracking-[0.15em] uppercase">Where Intelligence Meets Security</p>
+            </div>
+
+            <!-- 2, 3, 4, 5, 6. Main Certificate Body -->
+            <div class="text-center space-y-3 my-2">
+              
+              <!-- 2. Refined Heading -->
+              <h1 class="font-cinzel text-2xl sm:text-3xl font-semibold tracking-[0.12em] text-brand-gold uppercase">
+                CERTIFICATE OF COMPLETION
+              </h1>
+
+              <!-- 3. Subtitle -->
+              <p class="text-xs sm:text-sm font-serif italic text-slate-600">This is to certify that</p>
+
+              <!-- 4. RECIPIENT NAME (VISUAL FOCAL POINT) -->
+              <div class="py-1 px-4 max-w-2xl mx-auto overflow-hidden">
+                <h3 id="outName" class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy tracking-wide border-b border-brand-gold/50 inline-block px-6 pb-1 transition-all">
+                  Muhammad Ukasha Abdullahi
+                </h3>
+              </div>
+
+              <!-- 5. Completion Statement -->
+              <p id="outMasterclass" class="text-xs sm:text-sm font-sans text-slate-600 font-normal">
+                has successfully completed the professional masterclass on
+              </p>
+
+              <!-- 6. Programme Title (Prominent but restrained) -->
+              <div class="max-w-2xl mx-auto px-4">
+                <h4 id="outCourse" class="font-sans text-base sm:text-lg lg:text-xl font-bold text-brand-navy tracking-wider uppercase leading-snug">
+                  SMART HOME AUTOMATION & SMART CCTV INSTALLATION
+                </h4>
+              </div>
+
+            </div>
+
+            <!-- 7. BOTTOM GRID (Clean Three-Column Structure) -->
+            <div class="grid grid-cols-12 items-end text-xs text-slate-700 pt-4 border-t border-brand-navy/10 mt-2 gap-4">
+              
+              <!-- LEFT COLUMN: Location & Dates -->
+              <div class="col-span-4 space-y-1.5 text-left">
+                <div class="space-y-0.5">
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Location</span>
+                  <strong id="outLoc" class="text-brand-navy font-semibold text-xs block">Ibrahim Bako, Bauchi</strong>
+                </div>
+                <div class="space-y-0.5">
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Date of Issue</span>
+                  <strong id="outDate" class="text-brand-navy font-semibold text-xs block">June 11 – June 15, 2026</strong>
+                </div>
+              </div>
+
+              <!-- CENTER COLUMN: Certificate ID & Contact -->
+              <div class="col-span-4 text-center space-y-1.5">
+                <div class="space-y-0.5">
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Certificate ID</span>
+                  <strong id="outId" class="text-brand-navy font-mono font-bold text-xs block tracking-wide">BLT-2026-020</strong>
+                </div>
+                <div class="space-y-0.5">
+                  <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">CONTACT</span>
+                  <span class="text-slate-600 text-[11px] block">+234 803 247 6476 • info@baytlogic.com.ng</span>
+                </div>
+              </div>
+
+              <!-- RIGHT COLUMN: Signature Space & QR Verification -->
+              <div class="col-span-4 text-right flex flex-col items-end justify-between space-y-3">
+                
+                <!-- Director Name & Clean Whitespace for Manual Signature -->
+                <div class="w-full text-right space-y-1">
+                  <!-- Clean Whitespace reserved for manual pen signature -->
+                  <div class="h-10 w-full"></div>
+                  
+                  <div class="border-t border-brand-navy/40 pt-1 inline-block text-right">
+                    <p id="outDirector" class="font-bold text-brand-navy text-xs sm:text-sm">Yahaya Sulaiman Abdullahi</p>
+                    <p class="text-[10px] text-slate-500 font-medium block">Founder & Director</p>
+                    <p class="text-[9px] text-slate-400 font-semibold block">BaytLogic Technologies</p>
+                  </div>
+                </div>
+
+                <!-- QR Verification Code & Label -->
+                <div class="flex items-center gap-2 pt-1">
+                  <div class="text-right">
+                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider block">VERIFY CERTIFICATE</span>
+                    <span class="text-[8px] text-slate-500 block">Scan to authenticate this credential</span>
+                  </div>
+                  <div class="p-1 bg-white border border-slate-300 rounded shadow-sm inline-block">
+                    <img id="outQr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://baytlogic.com.ng/verify.html?id=BLT-2026-020" alt="Scan to Verify" class="w-14 h-14 object-contain" />
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function applyPresetCourse() {
+      const preset = document.getElementById('inCoursePreset').value;
+      if (preset !== 'CUSTOM') {
+        document.getElementById('inCourse').value = preset;
+        updateCert();
+      }
+    }
+
+    function updateCert() {
+      const id = document.getElementById('inId').value.trim().toUpperCase();
+      const name = document.getElementById('inName').value.trim();
+      const course = document.getElementById('inCourse').value.trim();
+      const loc = document.getElementById('inLoc').value.trim();
+      const date = document.getElementById('inDate').value.trim();
+      const director = document.getElementById('inDirector').value.trim();
+
+      document.getElementById('outId').innerText = id || 'BLT-2026-000';
+      document.getElementById('outName').innerText = name || 'Graduate Name';
+      document.getElementById('outCourse').innerText = course || 'PROGRAMME SPECIALIZATION';
+      document.getElementById('outLoc').innerText = loc || 'Bauchi, Nigeria';
+      document.getElementById('outDate').innerText = date || 'June 11 – June 15, 2026';
+      document.getElementById('outDirector').innerText = director || 'Yahaya Sulaiman Abdullahi';
+
+      const verifyUrl = `https://baytlogic.com.ng/verify.html?id=${id}`;
+      document.getElementById('outQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}`;
+      document.getElementById('qrPreviewLink').innerText = verifyUrl;
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('controlsSidebar');
+      sidebar.classList.toggle('hidden');
+    }
+
+    async function downloadPDF() {
+      const certId = document.getElementById('inId').value.trim().toUpperCase() || 'BLT-CERT';
+      const origCert = document.getElementById('certPaper');
+      
+      // Create a 100% isolated off-screen capture container at exact A4 Landscape (297mm x 210mm)
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.top = '0';
+      container.style.left = '0';
+      container.style.width = '297mm';
+      container.style.height = '210mm';
+      container.style.zIndex = '-9999';
+      container.style.background = '#fdfdfb';
+      container.style.overflow = 'hidden';
+      container.style.margin = '0';
+      container.style.padding = '0';
+
+      const clone = origCert.cloneNode(true);
+      clone.style.width = '100%';
+      clone.style.height = '100%';
+      clone.style.maxWidth = 'none';
+      clone.style.maxHeight = 'none';
+      clone.style.margin = '0';
+      clone.style.padding = '24px';
+      clone.style.boxSizing = 'border-box';
+      clone.style.borderRadius = '0';
+      clone.style.boxShadow = 'none';
+
+      container.appendChild(clone);
+      document.body.appendChild(container);
+
+      const opt = {
+        margin:       0,
+        filename:     `BaytLogic_Certificate_${certId}.pdf`,
+        image:        { type: 'jpeg', quality: 1.0 },
+        html2canvas:  { 
+          scale: 3, 
+          useCORS: true, 
+          letterRendering: true,
+          scrollX: 0,
+          scrollY: 0
+        },
+        jsPDF:        { unit: 'mm', format: [297, 210], orientation: 'landscape' }
+      };
+
+      try {
+        await html2pdf().set(opt).from(clone).save();
+      } finally {
+        if (document.body.contains(container)) {
+          document.body.removeChild(container);
+        }
+      }
+    }
+
+    function getHighestCertIdNum() {
+      let maxNum = 26;
+      const stored = localStorage.getItem('baytlogic_cert_counter');
+      if (stored) {
+        const val = parseInt(stored, 10);
+        if (!isNaN(val) && val > maxNum) maxNum = val;
+      }
+
+      const customCerts = JSON.parse(localStorage.getItem('baytlogic_certificates')) || [];
+      customCerts.forEach(c => {
+        if (c.id) {
+          const match = c.id.match(/(\d+)$/);
+          if (match) {
+            const num = parseInt(match[1], 10);
+            if (!isNaN(num) && num > maxNum) maxNum = num;
+          }
+        }
+      });
+      return maxNum;
+    }
+
+    function generateNextCertIdManual() {
+      const nextNum = getHighestCertIdNum() + 1;
+      localStorage.setItem('baytlogic_cert_counter', nextNum.toString());
+      const nextId = `BLT-2026-${String(nextNum).padStart(3, '0')}`;
+      document.getElementById('inId').value = nextId;
+      updateCert();
+    }
+
+    // Auto load URL parameters if passed from admin.html
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('id')) {
+        document.getElementById('inId').value = params.get('id');
+      } else {
+        const nextNum = getHighestCertIdNum() + 1;
+        document.getElementById('inId').value = `BLT-2026-${String(nextNum).padStart(3, '0')}`;
+      }
+      if (params.get('name')) document.getElementById('inName').value = params.get('name');
+      if (params.get('course')) {
+        document.getElementById('inCourse').value = params.get('course');
+        document.getElementById('inCoursePreset').value = 'CUSTOM';
+      }
+      if (params.get('date')) document.getElementById('inDate').value = params.get('date');
+      updateCert();
+    });
+  </script>
+</body>
+</html>

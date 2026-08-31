@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   // Required for OpenNext Cloudflare Pages deployment
   experimental: {
     serverActions: {
-      allowedOrigins: ["baytlogic.com.ng", "*.netlify.app"],
+      allowedOrigins: ["baytlogic.com.ng", "*.pages.dev", "*.netlify.app"],
     },
   },
 };
