@@ -366,22 +366,22 @@ function CertificateContent() {
               <div className="border border-[#0f2847]/70 p-1 h-full relative">
                 <div className="border-[1.5px] border-[#c59b27] p-5 sm:p-7 h-full flex flex-col justify-between relative bg-transparent">
                   
-                  {/* Subtle Background Watermark */}
+                  {/* Subtle Background Watermark of Official BaytLogic Dark Navy Logo */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
                     <img 
-                      src="/assets/baytlogic-icon-cyan.png" 
+                      src="/assets/new_projects/logo.png" 
                       alt="BaytLogic Watermark" 
-                      className="w-72 sm:w-80 h-auto object-contain opacity-[0.035] grayscale" 
+                      className="w-80 sm:w-96 h-auto object-contain opacity-[0.045]" 
                     />
                   </div>
 
-                  {/* 1. Header Section: Logo + Company Name + Motto */}
+                  {/* 1. Header Section: Dark Navy Brand Logo + Company Name + Motto */}
                   <div className="text-center space-y-1 relative z-10">
                     <div className="flex justify-center items-center pb-0.5">
                       <img 
-                        src="/assets/baytlogic-icon-cyan.png" 
-                        alt="BaytLogic Logo" 
-                        className="h-10 sm:h-12 w-auto object-contain mx-auto" 
+                        src="/assets/new_projects/logo.png" 
+                        alt="BaytLogic Dark Navy Logo" 
+                        className="h-14 sm:h-16 w-auto object-contain mx-auto" 
                       />
                     </div>
 
@@ -442,7 +442,7 @@ function CertificateContent() {
                         <div className="inline-block px-6 py-1.5 rounded-full bg-[#f4efe2] border border-[#c59b27]/60 text-xs">
                           <span className="italic font-playfair text-slate-700">In Collaboration With Sponsoring Partner: </span>
                           <strong className="font-sans font-bold text-[#0f2847] tracking-wide uppercase">
-                            {partners}
+                            {partners.split(',').map(s => s.trim()).filter(Boolean).join(' & ')}
                           </strong>
                         </div>
                       </div>
