@@ -10,7 +10,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.4",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.1",
     "framer-motion": "^12.42.0",
@@ -24,6 +23,7 @@
     "styled-components": "^6.4.3"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.15.13",
     "@sanity/client": "^7.23.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
