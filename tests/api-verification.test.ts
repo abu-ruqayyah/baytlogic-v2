@@ -17,7 +17,7 @@ function logFailure(message: string) {
 describe('API Verification Endpoint', () => {
   it('should verify certificate format using route handler', async () => {
     try {
-      const request = new Request('http://localhost:3000/api/verify-cert?id=MOCK123')
+      const request = new Request('http://localhost:3000/api/verify-cert?id=BLT-2026-002')
       const response = await GET(request)
       
       expect(response.status).toBe(200)

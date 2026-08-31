@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from 'next-sanity'
+import { createClient } from '@sanity/client'
 import { apiVersion, dataset, projectId } from '@/sanity/env'
 
 const writeClient = createClient({
