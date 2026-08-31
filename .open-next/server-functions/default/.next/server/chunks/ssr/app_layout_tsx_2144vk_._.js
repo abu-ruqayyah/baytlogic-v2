@@ -1,3 +1,0 @@
-module.exports=[233290,a=>{"use strict";var b=a.i(907997);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"en",className:"h-full antialiased",children:(0,b.jsx)("body",{className:"min-h-full flex flex-col",children:a})})},"metadata",0,{title:"BaytLogic Technologies | Where Intelligence Meets Security",description:"Nigeria's leading integrator of intelligent surveillance, cybersecurity, smart home automation, and networking."}])},70864,function(a){a.n(a.i(233290))}];
-
-//# sourceMappingURL=app_layout_tsx_2144vk_._.js.map

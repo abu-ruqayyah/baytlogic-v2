@@ -1,3 +1,0 @@
-export const production = {"NEXT_PUBLIC_SANITY_DATASET":"production","NEXT_PUBLIC_SANITY_PROJECT_ID":"bqwvwtqk","SANITY_API_READ_TOKEN":"skeMO7PYQ7EQlmHiSbRe0wj0ibkOjJRivOvC7kX8tHAPLu0FOW0RrRJOzcxV4Emb4SQ5lhSFWWaPpew5uDmNCPdupEaHimtL1yJVg53UNHmM4ptf9qc2EFsen7gEFIwn2XuEWLuBLO92d5tpXXv3i74xpxgetOeN9n86Va4UiFYymQvy7Rat"};
-export const development = {"NEXT_PUBLIC_SANITY_DATASET":"production","NEXT_PUBLIC_SANITY_PROJECT_ID":"bqwvwtqk","SANITY_API_READ_TOKEN":"skeMO7PYQ7EQlmHiSbRe0wj0ibkOjJRivOvC7kX8tHAPLu0FOW0RrRJOzcxV4Emb4SQ5lhSFWWaPpew5uDmNCPdupEaHimtL1yJVg53UNHmM4ptf9qc2EFsen7gEFIwn2XuEWLuBLO92d5tpXXv3i74xpxgetOeN9n86Va4UiFYymQvy7Rat"};
-export const test = {};
