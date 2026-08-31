@@ -23,11 +23,14 @@ export async function POST(request: Request) {
     let staffRole = 'Chief Admin'
     let authenticated = false
 
-    // 1. Check Master Chief Admin credentials (case-insensitive for master pass)
-    if (
-      (cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'admin' || cleanUser === 'yahaya') &&
-      (cleanPass.toLowerCase() === 'baytlogic2026' || cleanPass.toLowerCase() === 'admin')
-    ) {
+    const envUser = process.env.ADMIN_USERNAME ? process.env.ADMIN_USERNAME.trim().toLowerCase() : ''
+    const envPass = process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD.trim() : ''
+
+    const isMasterUser = cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'admin' || (envUser && cleanUser === envUser)
+    const isMasterPass = cleanPass === 'Baytlogic@2025' || cleanPass === 'baytlogic2026' || (envPass && cleanPass === envPass)
+
+    // 1. Check Master Chief Admin credentials
+    if (isMasterUser && isMasterPass) {
       staffName = 'Yahaya Sulaiman Abdullahi'
       staffRole = 'Chief Admin'
       authenticated = true

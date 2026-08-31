@@ -40,33 +40,8 @@ export default function StaffLogin() {
         return
       }
 
-      // Fallback local check
-      if (
-        (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'yahaya') &&
-        (cleanPass.toLowerCase() === 'baytlogic2026' || cleanPass.toLowerCase() === 'admin')
-      ) {
-        localStorage.setItem('baytlogic_staff_authenticated', 'true')
-        localStorage.setItem('baytlogic_staff_username', cleanUser)
-        localStorage.setItem('baytlogic_staff_name', 'Yahaya Sulaiman Abdullahi')
-        router.push('/dashboard/invoices')
-        return
-      }
-
       setError(data.error || 'Invalid username or password.')
     } catch (err) {
-      // Local fallback on connection error
-      const cleanUser = username.trim().toLowerCase()
-      const cleanPass = password.trim()
-      if (
-        (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'yahaya') &&
-        (cleanPass.toLowerCase() === 'baytlogic2026' || cleanPass.toLowerCase() === 'admin')
-      ) {
-        localStorage.setItem('baytlogic_staff_authenticated', 'true')
-        localStorage.setItem('baytlogic_staff_username', cleanUser)
-        localStorage.setItem('baytlogic_staff_name', 'Yahaya Sulaiman Abdullahi')
-        router.push('/dashboard/invoices')
-        return
-      }
       setError('Invalid username or password.')
     } finally {
       setLoading(false)

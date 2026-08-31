@@ -54,15 +54,18 @@ export async function POST(request: Request) {
     }
 
     // 2. Fallback for master admin if not in Sanity yet (create the staff record with the new password)
-    if (
-      (cleanUser === 'admin' || cleanUser === 'aburuqayyah001@gmail.com') &&
-      (currentPassword === 'BaytLogic2026' || currentPassword === 'baytlogic2026' || currentPassword === 'admin')
-    ) {
+    const envUser = process.env.ADMIN_USERNAME ? process.env.ADMIN_USERNAME.trim().toLowerCase() : ''
+    const envPass = process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD.trim() : ''
+
+    const isMasterUser = cleanUser === 'aburuqayyah001@gmail.com' || cleanUser === 'admin' || (envUser && cleanUser === envUser)
+    const isMasterPass = currentPassword.trim() === 'Baytlogic@2025' || currentPassword.trim() === 'baytlogic2026' || (envPass && currentPassword.trim() === envPass)
+
+    if (isMasterUser && isMasterPass) {
       // Create permanent Sanity staff record for master admin
       await writeClient.create({
         _type: 'staff',
         name: 'Yahaya Sulaiman Abdullahi',
-        username: 'admin',
+        username: cleanUser,
         password: newPassword
       })
 

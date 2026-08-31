@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Shield, Plus, Trash2, Printer, LogOut, FileText, User, MapPin, Phone, Percent, Tag, KeyRound, UserPlus, Lock, CheckCircle2, AlertCircle, X, Loader2 } from 'lucide-react'
+import { Shield, Plus, Trash2, Printer, LogOut, FileText, User, MapPin, Phone, Percent, Tag, KeyRound, UserPlus, Lock, CheckCircle2, AlertCircle, X, Loader2, Award } from 'lucide-react'
 import InvoiceTemplate from '@/components/InvoiceTemplate'
 import { client } from '@/sanity/lib/client'
 
@@ -306,6 +306,13 @@ export default function InvoiceDashboardClient() {
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <span className="text-xs text-zinc-400 font-mono hidden lg:inline">User: <strong className="text-white">{staffName}</strong></span>
           
+          <Link
+            href="/certificate"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-amber-300 border border-zinc-700 text-xs transition-all font-semibold shadow-sm"
+          >
+            <Award className="w-3.5 h-3.5 text-amber-400" /> Certificates
+          </Link>
+
           <button
             onClick={() => {
               setPasswordError('')
