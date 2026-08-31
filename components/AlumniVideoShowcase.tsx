@@ -19,80 +19,91 @@ export interface AlumniVideo {
 export const ALUMNI_VIDEOS: AlumniVideo[] = [
   {
     id: 1,
+    name: "Olopade Fasilat",
+    program: "Smart Home Automation",
+    cohort: "Masterclass 2026",
+    title: "Live Smart Home Automation & Wireless Control System",
+    desc: "Olopade Fasilat presents her practical smart home automation project built at BaytLogic Academy, showcasing live touch relay control and multi-room lighting automation.",
+    videoUrl: "https://www.youtube-nocookie.com/embed/mfEC5u1p76s",
+    thumbnailUrl: "https://img.youtube.com/vi/mfEC5u1p76s/hqdefault.jpg",
+    tags: ["Smart Home", "Touch Relay", "Tuya Automation", "Lighting"]
+  },
+  {
+    id: 2,
+    name: "Abdullahi Yusuf",
+    program: "Smart Home Automation",
+    cohort: "Masterclass 2026",
+    title: "IoT Smart Home & Security Automation Showcase",
+    desc: "Abdullahi Yusuf demonstrates an integrated IoT smart home system featuring automated sensor triggers, remote switching, and security alert integration.",
+    videoUrl: "https://www.youtube-nocookie.com/embed/edSKYwBEh5c",
+    thumbnailUrl: "https://img.youtube.com/vi/edSKYwBEh5c/hqdefault.jpg",
+    tags: ["IoT", "Smart Relay", "Home Automation", "Sensor Triggers"]
+  },
+  {
+    id: 3,
     name: "Kareem Saheed Adeniyi",
     program: "Kids Robotics & STEM",
     cohort: "Cohort 1 - 2026",
     title: "Autonomous Obstacle-Avoiding Mobile Robot",
     desc: "Kareem demonstrates his custom-programmed ultrasonic sensor robot built from scratch at BaytLogic Innovation Hub, successfully navigating complex obstacle courses.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube-nocookie.com/embed/mfEC5u1p76s",
     thumbnailUrl: "/assets/training/lv_0_20260312113248.png",
     tags: ["Arduino", "Ultrasonic", "Motor Driver", "Robotics"]
   },
   {
-    id: 2,
+    id: 4,
     name: "Muhammad Ukasha Abdullahi",
     program: "Smart Home Automation",
     cohort: "Masterclass June 2026",
     title: "Tuya Zigbee Touch Relay & IP CCTV Integration",
     desc: "Ukasha presents his live smart home setup with scheduled multi-gang touch switches, PIR motion sensors, and automated CCTV trigger notifications.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube-nocookie.com/embed/edSKYwBEh5c",
     thumbnailUrl: "/assets/training/lv_0_20260313052524.jpg",
     tags: ["Tuya Zigbee", "Smart Relay", "PIR Sensors", "CCTV"]
   },
   {
-    id: 3,
+    id: 5,
     name: "Ahmad Adamu Zakari",
     program: "CCTV & Security",
     cohort: "Cohort 1 - April 2026",
     title: "8-Channel PoE NVR Commercial Deployment",
     desc: "Ahmad showcases the complete physical termination, VLAN subnet configuration, and remote P2P smartphone streaming for a commercial building.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube-nocookie.com/embed/mfEC5u1p76s",
     thumbnailUrl: "/assets/projects/cctv-remote-viewing-01.jpg",
     tags: ["PoE NVR", "4K IP Camera", "VLAN", "P2P Remote"]
   },
   {
-    id: 4,
+    id: 6,
     name: "Maryam Muhammad Ahmad & Toyyibat Shittu",
     program: "Kids Robotics & STEM",
     cohort: "Robotics Cohort 1",
     title: "Scratch-Programmed Smart Home Lighting Simulator",
     desc: "Maryam and Toyyibat demonstrate interactive block coding that simulates automated home energy saving with light sensors and smart LEDs.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube-nocookie.com/embed/edSKYwBEh5c",
     thumbnailUrl: "/assets/training/lv_0_20260312113248.png",
     tags: ["Scratch 3.0", "LDR Sensors", "STEM", "Coding"]
   },
   {
-    id: 5,
+    id: 7,
     name: "Engr. Babangida Tukur",
     program: "Embedded AI & Edge",
     cohort: "Advanced Engineering 2026",
     title: "Edge Computer Vision & Facial Recognition Gateway",
     desc: "Babangida presents an edge AI system running on Raspberry Pi and Jetson Nano, performing real-time facial recognition and automated gate opening.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube-nocookie.com/embed/mfEC5u1p76s",
     thumbnailUrl: "/assets/projects/atbu-cce-lab-cctv-01.jpg",
     tags: ["Jetson Nano", "OpenCV", "Edge AI", "Access Control"]
   },
   {
-    id: 6,
+    id: 8,
     name: "Moshood Lukman Sekoni",
     program: "Smart Home Automation",
     cohort: "Masterclass June 2026",
     title: "Biometric Door Entry & Smart Siren Matrix",
     desc: "Moshood demonstrates how fingerprint lock attempts trigger immediate silent mobile alerts, floodlight activation, and siren alarms for maximum property defense.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    videoUrl: "https://www.youtube-nocookie.com/embed/edSKYwBEh5c",
     thumbnailUrl: "/assets/projects/ip-camera-installation-01.jpg",
     tags: ["Biometric Lock", "Smart Siren", "Intrusion Alert"]
-  },
-  {
-    id: 7,
-    name: "Young Innovators Robotics Team",
-    program: "Kids Robotics & STEM",
-    cohort: "Cohort 2 - July 2026",
-    title: "Line-Following Robotic Rover Team Challenge",
-    desc: "Collaborative project presentation by Level 2 trainees showcasing PID algorithm tuning and precision infrared line-following navigation.",
-    videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
-    thumbnailUrl: "/assets/training/lv_0_20260313052524.jpg",
-    tags: ["PID Control", "IR Sensor Array", "Robotics Rover"]
   }
 ]
 
